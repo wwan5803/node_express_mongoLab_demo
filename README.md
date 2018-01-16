@@ -1,0 +1,1 @@
+To start the server: NODE_ENV=devlopment nodemon server.js(watch for any change) or NODE_ENV=devlopment node server.js
