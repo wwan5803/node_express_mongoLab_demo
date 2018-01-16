@@ -4,7 +4,7 @@
   "description": "todo",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js",
+    "dev": "nodemon server/server.js",
     "start": "webpack --progress --colors --watch -d",
     "build": "webpack --progress --colors -p"
   },

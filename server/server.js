@@ -2,9 +2,10 @@ const express = require('express');
 const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient
 const app = express();
-const config = require("./config")
+const config = require("../config")
+var indexRoutes = require("./routes/index")
+var db = require('./db')
 
-var db;
 var username;
 var password;
 console.log('process.env.NODE_ENV', process.env.NODE_ENV)
@@ -34,28 +35,28 @@ app.set('view engine', 'ejs')
 console.log('username', username)
 
 
-MongoClient.connect(`mongodb://${username}:${password}@ds255797.mlab.com:55797/star-wars-quotes`, (err, client) => {
+db.connect(`mongodb://${username}:${password}@ds255797.mlab.com:55797/star-wars-quotes`, (err) => {
     if (err) return console.log(err);
-    db = client.db('star-wars-quotes');  
+    app.use('/', indexRoutes);
     app.listen(3000, function(){
         console.log('listen to 3000 port')
     })
 
-    app.get('/', (req, res)=>{
-        db.collection('quotes').find().toArray((err, result)=>{
-            console.log('result', result)
-            res.render('index.ejs', {quotes: result})        
-        });
+    // app.get('/', (req, res)=>{
+    //     db.collection('quotes').find().toArray((err, result)=>{
+    //         console.log('result', result)
+    //         res.render('index.ejs', {quotes: result})        
+    //     });
     
-        // res.sendFile(__dirname + '/index.html')
-    })
+    //     // res.sendFile(__dirname + '/index.html')
+    // })
     
-    app.post('/quotes', (req, res) => {
-        console.log(req.body)
-        db.collection('quotes').save(req.body, (err, result) => {
-            if(err) return console.log(err)
-            res.redirect('/')
-        })
-      })
+    // app.post('/quotes', (req, res) => {
+    //     console.log(req.body)
+    //     db.collection('quotes').save(req.body, (err, result) => {
+    //         if(err) return console.log(err)
+    //         res.redirect('/')
+    //     })
+    //   })
     
 })
